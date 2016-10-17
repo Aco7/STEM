@@ -2951,8 +2951,8 @@ c         mu1(i) = 0.5
          e2(i) = 1. - bgam(i)*expon
          e3(i) = bgam(i) + expon
          e4(i) = bgam(i) - expon
-	 if(abs(e1(i)).gt.1e34.or.abs(e2(i)).gt.1e34.or.
-     1     abs(e3(i)).gt.1e34.or.abs(e4(i)).gt.1e34) then
+	 if((abs(e1(i)).gt.1e34).or.(abs(e2(i)).gt.1e34).or.
+     1     (abs(e3(i)).gt.1e34).or.(abs(e4(i)).gt.1e34)) then
           write(*,*)' E data overflowed in ps2str, i,bgam,expon=',i,
      1	    bgam(i),expon
           write(*,*)' e =', e1(i),e2(i),e3(i),e4(i)
