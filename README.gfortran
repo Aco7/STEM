@@ -1,0 +1,51 @@
+### GNU compilers ###
+
+Compilers and libraries version:
+
+mpif90/gfortran version 4.4.7
+lapack/blas 3.2.1-4
+ioapi 3.2 (gfortran+openmp)
+added flags: -fopenmp -Wtabs
+
+### How to compile ###
+
+Use makefile_mpigfort. Change the makefile to desired paths.
+
+Ensure that everything you need is in your path and then run:
+
+make -f makefile_mpigfort
+
+Remember that you can collect the log (standard error/output) using:
+
+make -f makefile_mpigfort > mpigfort.log 2>&1
+
+To clean: 
+
+make clean -f makefile_mpigfort
+
+### Differences between master and gfortran branch ###
+
+1) Pointers with gfortran: paqmsg_library.f. It seems that the option "allocated" is not allowed for POINTERs using gfortran, 
+POINTERs were changed to ALLOCATABLEs in paqmsg_library_opt_gfort.f file.
+
+2) Adding IOAPI fixed_src files: PARMS3.EXT, IODECL3.EXT and FDESC3.EXT in IO1, IO2 and Util directories.
+
+3) Parenthesis issue in tuvsub.f (line 2955).
+
+abs(e3(i)).gt.1e34.or.abs(e4(i).gt.1e34)) -> (abs(e3(i)).gt.1e34).or.(abs(e4(i)).gt.1e34)
+
+4) Different issues in aq_driver_opt.f. This just affects saprcnov-opt.exe. New aq_driver_opt_gfort.f file.
+
+Issue with rank mismatch at line 96.
+
+if(emi_unc(i,j)>small)then -> if(emi_unc(i,j,2,1)>small) then
+
+Issue with time (line 331). Error: too many arguments in call to 'time at (1).
+
+t_string = ctime( time ( t_end ) ) ->  t_string = ctime( t_end )
+
+### Segfault issue ###
+
+To avoid segfault errors running saprcnov-fun.exe is required to unlimit the stacksize in the OS 
+(ulimit -s unlimited in bash or limit stacksize unlimited in csh). 
+
